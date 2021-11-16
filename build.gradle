@@ -12,7 +12,7 @@ application {
     mainClass = 'hexlet.code.App'
 }
 compileJava {
-    options.release = 16
+    options.release = 11
 }
 repositories {
     mavenCentral()
@@ -45,7 +45,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.assertj:assertj-core:3.19.0'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.3'
-
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 }
 

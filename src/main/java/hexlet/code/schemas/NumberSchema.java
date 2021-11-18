@@ -1,53 +1,45 @@
 package hexlet.code.schemas;
 
-import java.util.Objects;
-
-public class NumberSchema {
-    private static String parameter = null;
+public class NumberSchema extends BaseSchema<Object> {
+    private static String parameter;
     private static Integer min;
     private static Integer max;
 
-    public NumberSchema(Integer min, Integer max) {
-        this.min = min;
-        this.max = max;
+    public NumberSchema(String parameter, Integer min, Integer max) {
+        super(parameter, min, max);
+        NumberSchema.parameter = parameter;
+        NumberSchema.min = min;
+        NumberSchema.max = max;
+    }
+    public NumberSchema(String parameter) {
+        super(parameter);
+        NumberSchema.parameter = parameter;
     }
 
-    public NumberSchema() {
-
-    }
 
     public NumberSchema range(Integer min, Integer max) {
-        parameter = "range";
-        return new NumberSchema(min, max);
+        return new NumberSchema("range", min, max);
     }
 
     public NumberSchema required() {
-        parameter = "required";
-        return new NumberSchema();
+        return new NumberSchema("required");
     }
 
     public NumberSchema positive() {
-        parameter = "positive";
-        return new NumberSchema();
+        return new NumberSchema("positive");
     }
 
-    public static Boolean isValid(Object num) {
-        if (parameter == null) {
-            return true;
+    public Boolean isValid(Object value) {
+        if (value == null || parameter == null) {
+            return super.isValid(null);
         }
         switch (parameter) {
             case "required":
-                return num != null && !(num instanceof String);
+                return value instanceof Number;
             case "positive":
-                if (num == null) {
-                    return false;
-                }
-                return ((int) num >= 0);
+                return (int) value >= 0;
             case "range":
-                if (num == null) {
-                    return false;
-                }
-                return ((int) num >= min && (int) num <= max);
+                return ((int) value >= min && (int) value <= max);
             default:
                 throw new RuntimeException();
         }

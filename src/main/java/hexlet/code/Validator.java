@@ -1,18 +1,21 @@
 package hexlet.code;
 
+import hexlet.code.schemas.BaseSchema;
+import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
 
 public class Validator {
-    private static String status;
 
-    public static StringSchema string() {
-        status = "string";
-        return new StringSchema();
+    public StringSchema string() {
+        return new StringSchema(null);
     }
 
-    public static NumberSchema number() {
-        status = "number";
-        return new NumberSchema();
+    public NumberSchema number() {
+        return new NumberSchema(null);
+    }
+
+    public MapSchema map() {
+        return new MapSchema(null);
     }
 }

@@ -3,57 +3,48 @@ package hexlet.code.schemas;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Objects;
+
 @Getter
 @Setter
-public class StringSchema extends BaseSchema {
-    private static String parameter = null;
+public class StringSchema extends BaseSchema<Object> {
+    private static String parameter;
     private static int num;
     private static String strContains;
 
-    public StringSchema(String option, int num) {
-        this.parameter = option;
-        this.num = num;
+    public StringSchema(String parameter, int num) {
+        super(parameter, num);
+        StringSchema.parameter = parameter;
+        StringSchema.num = num;
+
     }
 
-    public StringSchema(String option, String strContains) {
-        this.parameter = option;
-        this.strContains = strContains;
+    public StringSchema(String parameter, String strContains) {
+        super(parameter, strContains);
+        StringSchema.parameter = parameter;
+        StringSchema.strContains = strContains;
     }
 
-    public StringSchema(String option) {
-        this.parameter = option;
+    public StringSchema(String parameter) {
+        super(parameter);
+        StringSchema.parameter = parameter;
     }
 
-    public StringSchema() {
-    }
-
-    public static Boolean isValid(String str) {
-        if (parameter == null) {
-            return true;
+    public Boolean isValid(String value) {
+        if (value == null || parameter == null) {
+            return super.isValid(null);
         }
         switch (parameter) {
             case "minLength":
-                if (Objects.equals(str, null) && num == 0) {
-                    return true;
-                } else if (Objects.equals(str, null)) {
-                    return false;
-                }
-                return str.length() >= num;
+                return value.length() >= num;
             case "required":
-                if (Objects.equals(str, null)) {
-                    return false;
-                }
-                return str.length() != 0;
+                return value.length() > 0;
             case "contains":
-                if (Objects.equals(str, null) && Objects.equals(strContains, null)) {
-                    return true;
-                }
-                return str.contains(strContains);
+                return value.contains(strContains);
             default:
                 throw new RuntimeException();
         }
     }
+
 
     public StringSchema minLength(int num) {
         return new StringSchema("minLength", num);

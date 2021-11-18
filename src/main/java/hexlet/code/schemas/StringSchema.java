@@ -18,10 +18,10 @@ public class StringSchema extends BaseSchema<Object> {
 
     }
 
-    public StringSchema(String parameter, String strContains) {
-        super(parameter, strContains);
+    public StringSchema(String parameter, String stringContains) {
+        super(parameter, stringContains);
         StringSchema.parameter = parameter;
-        StringSchema.strContains = strContains;
+        StringSchema.strContains = stringContains;
     }
 
     public StringSchema(String parameter) {

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class MapSchema extends BaseSchema<Object> {
+public class MapSchema<T1> extends BaseSchema<T1> {
     private static String parameter;
     private static int sizeMap;
     private static Set<String> keySet = new HashSet<>();
@@ -22,12 +22,12 @@ public class MapSchema extends BaseSchema<Object> {
         MapSchema.sizeMap = sizeMap;
     }
 
-    public MapSchema required() {
-        return new MapSchema("required");
+    public MapSchema<T1> required() {
+        return new MapSchema<>("required");
     }
 
-    public MapSchema sizeof(int sizeMap) {
-        return new MapSchema("sizeof", sizeMap);
+    public MapSchema<T1> sizeof(int sizeMap) {
+        return new MapSchema<>("sizeof", sizeMap);
 
     }
 
@@ -39,7 +39,7 @@ public class MapSchema extends BaseSchema<Object> {
             case "required":
                 return map instanceof Map;
             case "sizeof":
-                return (map instanceof Map) && ((Map<?, ?>) map).size() == sizeMap;
+                return (map instanceof Map) &&  map.size() == sizeMap;
             case "shape":
                 return isShape(map);
             default:
@@ -55,8 +55,8 @@ public class MapSchema extends BaseSchema<Object> {
 
     public Boolean isShape(Map<Object, Object> map) {
         int result = 0;
-        for (Object key : keySet) {
-            if (shapeMap.get(key).isValid(((Map<?, ?>) map).get(key))) {
+        for (String key : keySet) {
+            if (shapeMap.get(key).isValid(map.get(key))) {
                 result = result + 1;
             }
         }

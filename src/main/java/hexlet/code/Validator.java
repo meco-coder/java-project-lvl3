@@ -15,7 +15,7 @@ public class Validator {
         return new NumberSchema(null);
     }
 
-    public MapSchema map() {
-        return new MapSchema(null);
+    public MapSchema<Object> map() {
+        return new MapSchema<>(null);
     }
 }

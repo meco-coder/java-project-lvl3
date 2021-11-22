@@ -14,7 +14,7 @@ public class TestValidator {
 
 
     @Test
-    public void TestValidator1() {
+    public void testValidator1() {
         Validator v = new Validator();
         StringSchema schema = v.string();
 
@@ -47,7 +47,7 @@ public class TestValidator {
     }
 
     @Test
-    public void TestValidator2() {
+    public void testValidator2() {
         Validator v = new Validator();
         NumberSchema schema = v.number();
         Boolean actual1 = schema.isValid(null);
@@ -79,7 +79,7 @@ public class TestValidator {
     }
 
     @Test
-    public void TestValidator3() {
+    public void testValidator3() {
         Validator v = new Validator();
         MapSchema schema = v.map();
         Boolean actual1 = schema.isValid(null);
@@ -101,7 +101,7 @@ public class TestValidator {
     }
 
     @Test
-    public void TestValidator4() {
+    public void testValidator4() {
 
         Validator v = new Validator();
 

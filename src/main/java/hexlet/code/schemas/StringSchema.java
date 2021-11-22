@@ -1,60 +1,58 @@
 package hexlet.code.schemas;
 
-import lombok.Getter;
-import lombok.Setter;
-
-
-@Getter
-@Setter
-public class StringSchema extends BaseSchema<Object> {
+public class StringSchema extends BaseSchema {
     private static String parameter;
     private static int num;
     private static String strContains;
 
-    public StringSchema(String parameter, int num) {
-        super(parameter, num);
-        StringSchema.parameter = parameter;
-        StringSchema.num = num;
+    public StringSchema(final String sortParameter, final int value) {
+        super(sortParameter, value);
+        StringSchema.parameter = sortParameter;
+        StringSchema.num = value;
 
     }
 
-    public StringSchema(String parameter, String stringContains) {
-        super(parameter, stringContains);
-        StringSchema.parameter = parameter;
+    public StringSchema(final String sortParameter, final String stringContains) {
+        super(sortParameter, stringContains);
+        StringSchema.parameter = sortParameter;
         StringSchema.strContains = stringContains;
     }
 
-    public StringSchema(String parameter) {
-        super(parameter);
-        StringSchema.parameter = parameter;
+    public StringSchema(final String sortParameter) {
+        super(sortParameter);
+        StringSchema.parameter = sortParameter;
     }
 
-    public Boolean isValid(String value) {
+
+
+
+    @Override
+    public final Boolean isValid(Object value) {
         if (value == null || parameter == null) {
             return super.isValid(null);
         }
         switch (parameter) {
             case "minLength":
-                return value.length() >= num;
+                return ((String) value).length() >= num;
             case "required":
-                return value.length() > 0;
+                return ((String) value).length() > 0;
             case "contains":
-                return value.contains(strContains);
+                return ((String) value).contains(strContains);
             default:
                 throw new RuntimeException();
         }
     }
 
 
-    public StringSchema minLength(int num) {
-        return new StringSchema("minLength", num);
+    public final StringSchema minLength(final int value) {
+        return new StringSchema("minLength", value);
     }
 
-    public StringSchema required() {
+    public final StringSchema required() {
         return new StringSchema("required");
     }
 
-    public StringSchema contains(String str) {
+    public final StringSchema contains(final String str) {
         return new StringSchema("contains", str);
     }
 

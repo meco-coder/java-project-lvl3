@@ -1,35 +1,37 @@
 package hexlet.code.schemas;
 
+
 public class NumberSchema extends BaseSchema<Object> {
     private static String parameter;
     private static Integer min;
     private static Integer max;
 
-    public NumberSchema(String parameter, Integer min, Integer max) {
-        super(parameter, min, max);
-        NumberSchema.parameter = parameter;
-        NumberSchema.min = min;
-        NumberSchema.max = max;
-    }
-    public NumberSchema(String parameter) {
-        super(parameter);
-        NumberSchema.parameter = parameter;
+    public NumberSchema(final String sortParameter, final Integer minNum, final Integer maxNum) {
+        super(sortParameter, minNum, maxNum);
+        NumberSchema.parameter = sortParameter;
+        NumberSchema.min = minNum;
+        NumberSchema.max = maxNum;
     }
 
-
-    public NumberSchema range(Integer min, Integer max) {
-        return new NumberSchema("range", min, max);
+    public NumberSchema(final String sortParameter) {
+        super(sortParameter);
+        NumberSchema.parameter = sortParameter;
     }
 
-    public NumberSchema required() {
+
+    public final NumberSchema range(final Integer minNum, final Integer maxNum) {
+        return new NumberSchema("range", minNum, maxNum);
+    }
+
+    public final NumberSchema required() {
         return new NumberSchema("required");
     }
 
-    public NumberSchema positive() {
+    public final NumberSchema positive() {
         return new NumberSchema("positive");
     }
 
-    public Boolean isValid(Object value) {
+    public final Boolean isValid(final Object value) {
         if (value == null || parameter == null) {
             return super.isValid(null);
         }

@@ -62,7 +62,8 @@ public class TestValidator {
         Assertions.assertEquals(true, actual3);
         Boolean actual4 = schema.isValid("5");
         Assertions.assertEquals(false, actual4);
-        Boolean actual44 = schema.isValid(1.2);
+        final double num = 1.2;
+        Boolean actual44 = schema.isValid(num);
         Assertions.assertEquals(false, actual44);
 
         Boolean actual5 = schema.positive().isValid(numPositive);

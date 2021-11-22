@@ -53,27 +53,31 @@ public class TestValidator {
         Boolean actual1 = schema.isValid(null);
         Assertions.assertEquals(true, actual1);
 
+        final int numPositive = 10;
+        final int numNegative = -10;
         schema.required();
         Boolean actual2 = schema.isValid(null);
         Assertions.assertEquals(false, actual2);
-        Boolean actual3 = schema.isValid(10);
+        Boolean actual3 = schema.isValid(numPositive);
         Assertions.assertEquals(true, actual3);
         Boolean actual4 = schema.isValid("5");
         Assertions.assertEquals(false, actual4);
 
-        Boolean actual5 = schema.positive().isValid(10);
+        Boolean actual5 = schema.positive().isValid(numPositive);
         Assertions.assertEquals(true, actual5);
-        Boolean actual6 = schema.isValid(-10);
+        Boolean actual6 = schema.isValid(numNegative);
         Assertions.assertEquals(false, actual6);
 
-        schema.range(5, 10);
-        Boolean actual7 = schema.isValid(5);
+        final int rageMin = 5;
+        final int rageMax = 10;
+        schema.range(rageMin, rageMax);
+        Boolean actual7 = schema.isValid(rageMin);
         Assertions.assertEquals(true, actual7);
-        Boolean actual8 = schema.isValid(10);
+        Boolean actual8 = schema.isValid(rageMax);
         Assertions.assertEquals(true, actual8);
-        Boolean actual9 = schema.isValid(4);
+        Boolean actual9 = schema.isValid(0);
         Assertions.assertEquals(false, actual9);
-        Boolean actual10 = schema.isValid(11);
+        Boolean actual10 = schema.isValid(rageMax + rageMin);
         Assertions.assertEquals(false, actual10);
 
     }
@@ -115,7 +119,7 @@ public class TestValidator {
 
         Map<String, Object> human1 = new HashMap<>();
         human1.put("name", "Kolya");
-        human1.put("age", 100);
+        human1.put("age", 1);
         schema.isValid(human1); // true
 
         Map<String, Object> human2 = new HashMap<>();
@@ -130,7 +134,7 @@ public class TestValidator {
 
         Map<String, Object> human4 = new HashMap<>();
         human4.put("name", "Valya");
-        human4.put("age", -5);
+        human4.put("age", -1);
         schema.isValid(human4); // false
     }
 }

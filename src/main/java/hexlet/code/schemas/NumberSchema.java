@@ -37,7 +37,7 @@ public class NumberSchema extends BaseSchema<Object> {
         }
         switch (parameter) {
             case "required":
-                return value instanceof Number;
+                return value instanceof Integer;
             case "positive":
                 return (int) value >= 0;
             case "range":

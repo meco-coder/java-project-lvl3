@@ -1,59 +1,66 @@
 package hexlet.code.schemas;
 
-public class StringSchema extends BaseSchema {
-    private static String parameter;
-    private static int num;
-    private static String strContains;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-    public StringSchema(final String sortParameter, final int value) {
-        super(sortParameter, value);
-        StringSchema.parameter = sortParameter;
-        StringSchema.num = value;
+public class StringSchema extends BaseSchema<Object> {
 
+    private final Map<String, List<Object>> parameters = new HashMap<>();
+
+    public StringSchema() {
     }
 
-    public StringSchema(final String sortParameter, final String stringContains) {
-        super(sortParameter, stringContains);
-        StringSchema.parameter = sortParameter;
-        StringSchema.strContains = stringContains;
+    public final StringSchema minLength(final int value) {
+        parameters.put("minLength", List.of(value));
+        return this;
     }
 
-    public StringSchema(final String sortParameter) {
-        super(sortParameter);
-        StringSchema.parameter = sortParameter;
+    public final StringSchema required() {
+        parameters.put("required", null);
+        return this;
     }
 
-
+    public final StringSchema contains(final String str) {
+        parameters.put("contains", List.of(str));
+        return this;
+    }
 
 
     @Override
     public final Boolean isValid(Object value) {
-        if (value == null || parameter == null) {
-            return super.isValid(null);
+        if (parameters.size() == 0) {
+            return true;
         }
-        switch (parameter) {
-            case "minLength":
-                return ((String) value).length() >= num;
-            case "required":
-                return ((String) value).length() > 0;
-            case "contains":
-                return ((String) value).contains(strContains);
-            default:
-                throw new RuntimeException();
+        setParameters(parameters);
+        final Set<String> parameter = parameters.keySet();
+        final List<Boolean> result = new ArrayList<>();
+        for (String key : parameter) {
+            setParameter(key);
+            if (value == null || key == null) {
+                result.add(super.isValid(null));
+                break;
+            }
+            switch (key) {
+                case "minLength":
+                    result.add(((String) value).length() >= (int) parameters.get(key).get(0));
+                    break;
+                case "required":
+                    result.add(((String) value).length() > 0);
+                    break;
+                case "contains":
+                    result.add(((String) value).contains((String) parameters.get(key).get(0)));
+                    break;
+                default:
+                    throw new RuntimeException();
+            }
         }
-    }
-
-
-    public final StringSchema minLength(final int value) {
-        return new StringSchema("minLength", value);
-    }
-
-    public final StringSchema required() {
-        return new StringSchema("required");
-    }
-
-    public final StringSchema contains(final String str) {
-        return new StringSchema("contains", str);
+        if (result.size() == 1) {
+            return result.get(0);
+        }
+        return !result.contains(false);
     }
 
 }

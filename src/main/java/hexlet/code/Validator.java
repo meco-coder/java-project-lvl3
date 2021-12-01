@@ -7,14 +7,14 @@ import hexlet.code.schemas.StringSchema;
 public class Validator {
 
     public static StringSchema string() {
-        return new StringSchema(null);
+        return new StringSchema();
     }
 
     public static NumberSchema number() {
-        return new NumberSchema(null);
+        return new NumberSchema();
     }
 
     public static MapSchema map() {
-        return new MapSchema<>(null);
+        return new MapSchema<>();
     }
 }

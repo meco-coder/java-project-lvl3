@@ -1,58 +1,70 @@
 package hexlet.code.schemas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class MapSchema<T1> extends BaseSchema<T1> {
-    private static String parameter;
-    private static int size;
-    private static Set<String> keySet = new HashSet<>();
-    private static Map<String, BaseSchema<Object>> shapeMap = new HashMap<>();
+    private final Map<String, List<Object>> parameters = new HashMap<>();
+    private Set<String> keySet = new HashSet<>();
+    private Map<String, BaseSchema<Object>> shapeMap = new HashMap<>();
 
-    public MapSchema(final String sortParameter) {
-        super(sortParameter);
-        MapSchema.parameter = sortParameter;
-    }
-
-    public MapSchema(final String sortParameter, final int sizeMap) {
-        super(sortParameter, sizeMap);
-        MapSchema.parameter = sortParameter;
-        MapSchema.size = sizeMap;
+    public MapSchema() {
     }
 
     public final MapSchema<T1> required() {
-        return new MapSchema<>("required");
+        parameters.put("required", null);
+        return this;
     }
 
     public final MapSchema<T1> sizeof(final int sizeMap) {
-        return new MapSchema<>("sizeof", sizeMap);
-
+        parameters.put("sizeof", List.of(sizeMap));
+        return this;
     }
 
     @Override
     public final Boolean isValid(T1 map) {
-        if (parameter == null || map == null) {
-            return super.isValid(null);
+        if (parameters.size() == 0) {
+            return true;
         }
-        switch (parameter) {
-            case "required":
-                return map instanceof Map;
-            case "sizeof":
-                return (map instanceof Map) && ((Map<Object, Object>) map).size() == size;
-            case "shape":
-                return isShape((Map<Object, Object>) map);
-            default:
-                throw new RuntimeException();
+        setParameters(parameters);
+        final Set<String> parameter = parameters.keySet();
+        final List<Boolean> result = new ArrayList<>();
+        for (String key : parameter) {
+            setParameter(key);
+            if (key == null || map == null) {
+                result.add(super.isValid(null));
+                break;
+            }
+            switch (key) {
+                case "required":
+                    result.add(map instanceof Map);
+                    break;
+                case "sizeof":
+                    result.add((map instanceof Map)
+                            && ((Map<Object, Object>) map).size() == (int) parameters.get(key).get(0));
+                    break;
+                case "shape":
+                    result.add(isShape((Map<Object, Object>) map));
+                    break;
+                default:
+                    throw new RuntimeException();
+            }
         }
+        if (result.size() == 1) {
+            return result.get(0);
+        }
+        return !result.contains(false);
     }
 
 
     public final void shape(final Map<String, BaseSchema<Object>> map) {
         shapeMap = map;
         keySet = map.keySet();
-        parameter = "shape";
+        parameters.put("shape", null);
     }
 
     public final Boolean isShape(final Map<Object, Object> map) {
@@ -66,3 +78,4 @@ public class MapSchema<T1> extends BaseSchema<T1> {
     }
 
 }
+

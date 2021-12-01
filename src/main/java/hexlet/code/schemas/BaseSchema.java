@@ -2,41 +2,33 @@ package hexlet.code.schemas;
 
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
 @Data
 public class BaseSchema<T1> {
 
     private static String parameter;
-    private static int num;
-    private static String strContains;
-    private static int min;
-    private static int max;
+    private static Map<String, List<Object>> parameters = new HashMap<>();
 
-
-    public BaseSchema(String sortParameter, int value) {
-        BaseSchema.parameter = sortParameter;
-        BaseSchema.num = value;
+    public BaseSchema() {
     }
 
-    public BaseSchema(String sortParameter, String stringContains) {
-        BaseSchema.parameter = sortParameter;
-        BaseSchema.strContains = stringContains;
+    public static void setParameters(Map<String, List<Object>> param) {
+        BaseSchema.parameters = param;
     }
 
-    public BaseSchema(String sortParameter) {
-        BaseSchema.parameter = sortParameter;
-    }
-
-    public BaseSchema(String sortParameter, int minNum, int maxNum) {
-        BaseSchema.parameter = sortParameter;
-        BaseSchema.min = minNum;
-        BaseSchema.max = maxNum;
+    public static void setParameter(String param1) {
+        BaseSchema.parameter = param1;
     }
 
     /**
      * @param value the value that is passed to the method
      * @return return false or true
      */
-    public  Boolean isValid(T1 value) {
+    public Boolean isValid(T1 value) {
         if (parameter == null) {
             return true;
         }
@@ -45,16 +37,15 @@ public class BaseSchema<T1> {
                 return value != null;
             case "minLength":
             case "sizeof":
-                return num == 0;
+                return (int) parameters.get(parameter).get(0) == 0;
             case "contains":
-                return strContains == null;
+                return parameters.get(parameter).get(0) == null;
             case "positive":
                 return value == null;
             case "range":
-                return min == 0 && max == 0;
+                return (int) parameters.get(parameter).get(0) == 0 && (int) parameters.get(parameter).get(1) == 0;
             default:
                 throw new RuntimeException();
         }
-
     }
 }

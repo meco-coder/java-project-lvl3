@@ -1,50 +1,65 @@
 package hexlet.code.schemas;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class NumberSchema extends BaseSchema<Object> {
-    private static String parameter;
-    private static Integer min;
-    private static Integer max;
+    private final Map<String, List<Object>> parameters = new HashMap<>();
 
-    public NumberSchema(final String sortParameter, final Integer minNum, final Integer maxNum) {
-        super(sortParameter, minNum, maxNum);
-        NumberSchema.parameter = sortParameter;
-        NumberSchema.min = minNum;
-        NumberSchema.max = maxNum;
+    public NumberSchema() {
     }
-
-    public NumberSchema(final String sortParameter) {
-        super(sortParameter);
-        NumberSchema.parameter = sortParameter;
-    }
-
 
     public final NumberSchema range(final Integer minNum, final Integer maxNum) {
-        return new NumberSchema("range", minNum, maxNum);
+        parameters.put("range", List.of(minNum, maxNum));
+        return this;
     }
 
     public final NumberSchema required() {
-        return new NumberSchema("required");
+        parameters.put("required", null);
+        return this;
     }
 
     public final NumberSchema positive() {
-        return new NumberSchema("positive");
+        parameters.put("positive", null);
+        return this;
     }
 
+    @Override
     public final Boolean isValid(final Object value) {
-        if (value == null || parameter == null) {
-            return super.isValid(null);
+        if (parameters.size() == 0) {
+            return true;
         }
-        switch (parameter) {
-            case "required":
-                return value instanceof Integer;
-            case "positive":
-                return (int) value >= 0;
-            case "range":
-                return ((int) value >= min && (int) value <= max);
-            default:
-                throw new RuntimeException();
+        setParameters(parameters);
+        final Set<String> parameter = parameters.keySet();
+        final List<Boolean> result = new ArrayList<>();
+        for (String key : parameter) {
+            setParameter(key);
+            if (value == null || key == null) {
+                result.add(super.isValid(value));
+                break;
+            }
+            switch (key) {
+                case "required":
+                    result.add(value instanceof Number);
+                    break;
+                case "positive":
+                    result.add((int) value >= 0);
+                    break;
+                case "range":
+                    result.add(((int) value >= (int) parameters.get(key).get(0)
+                            && (int) value <= (int) parameters.get(key).get(1)));
+                    break;
+                default:
+                    throw new RuntimeException();
+            }
         }
+        if (result.size() == 1) {
+            return result.get(0);
+        }
+        return !result.contains(false);
     }
 
 }

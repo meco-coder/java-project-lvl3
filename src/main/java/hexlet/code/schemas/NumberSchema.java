@@ -39,21 +39,26 @@ public class NumberSchema extends BaseSchema<Object> {
             setParameter(key);
             if (value == null || key == null) {
                 result.add(super.isValid(value));
-                break;
-            }
-            switch (key) {
-                case "required":
-                    result.add(value instanceof Number);
-                    break;
-                case "positive":
-                    result.add((int) value >= 0);
-                    break;
-                case "range":
-                    result.add(((int) value >= (int) parameters.get(key).get(0)
-                            && (int) value <= (int) parameters.get(key).get(1)));
-                    break;
-                default:
-                    throw new RuntimeException();
+
+            } else {
+                switch (key) {
+                    case "required":
+                        result.add(value instanceof Integer);
+                        break;
+                    case "positive":
+                        if (value instanceof Integer) {
+                            result.add((int) value >= 0);
+                        }
+                        break;
+                    case "range":
+                        if (value instanceof Integer) {
+                            result.add(((int) value >= (int) parameters.get(key).get(0)
+                                    && (int) value <= (int) parameters.get(key).get(1)));
+                        }
+                        break;
+                    default:
+                        throw new RuntimeException();
+                }
             }
         }
         if (result.size() == 1) {

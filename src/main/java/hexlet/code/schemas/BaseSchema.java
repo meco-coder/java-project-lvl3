@@ -43,7 +43,7 @@ public class BaseSchema<T1> {
             case "positive":
                 return value == null;
             case "range":
-                return (int) parameters.get(parameter).get(0) == 0 && (int) parameters.get(parameter).get(1) == 0;
+                return false;
             default:
                 throw new RuntimeException();
         }

@@ -52,9 +52,6 @@ public class MapSchema<T1> extends BaseSchema<T1> {
                     throw new RuntimeException();
             }
         }
-        if (result.size() == 1) {
-            return result.get(0);
-        }
         return !result.contains(false);
     }
 

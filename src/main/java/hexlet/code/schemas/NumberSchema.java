@@ -59,9 +59,6 @@ public class NumberSchema extends BaseSchema<Object> {
                 }
             }
         }
-        if (result.size() == 1) {
-            return result.get(0);
-        }
         return !result.contains(false);
     }
 

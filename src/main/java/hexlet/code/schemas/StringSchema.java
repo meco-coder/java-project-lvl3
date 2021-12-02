@@ -55,9 +55,6 @@ public class StringSchema extends BaseSchema<Object> {
                     throw new RuntimeException();
             }
         }
-        if (validationResult.size() == 1) {
-            return validationResult.get(0);
-        }
         return !validationResult.contains(false);
     }
 

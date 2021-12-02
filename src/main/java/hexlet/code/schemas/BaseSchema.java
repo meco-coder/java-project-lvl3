@@ -24,8 +24,12 @@ public class BaseSchema<T1> {
         BaseSchema.parameter = param1;
     }
 
+    public Boolean parametersIsEmpty() {
+        return parameters.size() == 0;
+    }
+
     /**
-     * @param value the value that is passed to the method
+     * @parameter value the value that is passed to the method
      * @return return false or true
      */
     public Boolean isValid(T1 value) {

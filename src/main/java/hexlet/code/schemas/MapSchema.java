@@ -27,10 +27,8 @@ public class MapSchema<T1> extends BaseSchema<T1> {
 
     @Override
     public final Boolean isValid(T1 map) {
-        if (parameters.size() == 0) {
-            return true;
-        }
         setParameters(parameters);
+        parametersIsEmpty();
         final Set<String> parameter = parameters.keySet();
         final List<Boolean> result = new ArrayList<>();
         for (String key : parameter) {

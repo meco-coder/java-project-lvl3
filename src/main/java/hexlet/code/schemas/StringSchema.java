@@ -23,44 +23,42 @@ public class StringSchema extends BaseSchema<Object> {
         return this;
     }
 
-    public final StringSchema contains(final String str) {
-        parameters.put("contains", List.of(str));
+    public final StringSchema contains(final String string) {
+        parameters.put("contains", List.of(string));
         return this;
     }
 
 
     @Override
     public final Boolean isValid(Object value) {
-        if (parameters.size() == 0) {
-            return true;
-        }
         setParameters(parameters);
+        parametersIsEmpty();
         final Set<String> parameter = parameters.keySet();
-        final List<Boolean> result = new ArrayList<>();
-        for (String key : parameter) {
-            setParameter(key);
-            if (value == null || key == null) {
-                result.add(super.isValid(null));
+        final List<Boolean> validationResult = new ArrayList<>();
+        for (String parameterFromSet : parameter) {
+            setParameter(parameterFromSet);
+            if (value == null || parameterFromSet == null) {
+                validationResult.add(super.isValid(null));
                 break;
             }
-            switch (key) {
+            switch (parameterFromSet) {
                 case "minLength":
-                    result.add(((String) value).length() >= (int) parameters.get(key).get(0));
+                    validationResult.add(((String) value).length() >= (int) parameters.get(parameterFromSet).get(0));
                     break;
                 case "required":
-                    result.add(((String) value).length() > 0);
+                    validationResult.add(((String) value).length() > 0);
                     break;
                 case "contains":
-                    result.add(((String) value).contains((String) parameters.get(key).get(0)));
+                    validationResult.add(((String) value).contains((String) parameters.get(parameterFromSet).get(0)));
                     break;
                 default:
                     throw new RuntimeException();
             }
         }
-        if (result.size() == 1) {
-            return result.get(0);
+        if (validationResult.size() == 1) {
+            return validationResult.get(0);
         }
-        return !result.contains(false);
+        return !validationResult.contains(false);
     }
 
 }

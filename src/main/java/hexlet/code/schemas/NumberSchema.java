@@ -29,10 +29,8 @@ public class NumberSchema extends BaseSchema<Object> {
 
     @Override
     public final Boolean isValid(final Object value) {
-        if (parameters.size() == 0) {
-            return true;
-        }
         setParameters(parameters);
+        parametersIsEmpty();
         final Set<String> parameter = parameters.keySet();
         final List<Boolean> result = new ArrayList<>();
         for (String key : parameter) {

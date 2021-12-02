@@ -30,29 +30,29 @@ public class MapSchema<T1> extends BaseSchema<T1> {
         setParameters(parameters);
         parametersIsEmpty();
         final Set<String> parameter = parameters.keySet();
-        final List<Boolean> result = new ArrayList<>();
-        for (String key : parameter) {
-            setParameter(key);
-            if (key == null || map == null) {
-                result.add(super.isValid(null));
+        final List<Boolean> validationResult = new ArrayList<>();
+        for (String parameterFromSet : parameter) {
+            setParameter(parameterFromSet);
+            if (parameterFromSet == null || map == null) {
+                validationResult.add(super.isValid(null));
                 break;
             }
-            switch (key) {
+            switch (parameterFromSet) {
                 case "required":
-                    result.add(map instanceof Map);
+                    validationResult.add(map instanceof Map);
                     break;
                 case "sizeof":
-                    result.add((map instanceof Map)
-                            && ((Map<Object, Object>) map).size() == (int) parameters.get(key).get(0));
+                    validationResult.add((map instanceof Map)
+                            && ((Map<?, ?>) map).size() == (int) parameters.get(parameterFromSet).get(0));
                     break;
                 case "shape":
-                    result.add(isShape((Map<Object, Object>) map));
+                    validationResult.add(isShape((Map<Object, Object>) map));
                     break;
                 default:
                     throw new RuntimeException();
             }
         }
-        return !result.contains(false);
+        return !validationResult.contains(false);
     }
 
 

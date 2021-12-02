@@ -32,34 +32,31 @@ public class NumberSchema extends BaseSchema<Object> {
         setParameters(parameters);
         parametersIsEmpty();
         final Set<String> parameter = parameters.keySet();
-        final List<Boolean> result = new ArrayList<>();
-        for (String key : parameter) {
-            setParameter(key);
-            if (value == null || key == null) {
-                result.add(super.isValid(value));
-
-            } else {
-                switch (key) {
+        final List<Boolean> validationResult = new ArrayList<>();
+        for (String parameterFromSet : parameter) {
+            setParameter(parameterFromSet);
+            if (value == null || parameterFromSet == null) {
+                validationResult.add(super.isValid(value));
+            } else if (value instanceof Integer) {
+                switch (parameterFromSet) {
                     case "required":
-                        result.add(value instanceof Integer);
+                        validationResult.add(true);
                         break;
                     case "positive":
-                        if (value instanceof Integer) {
-                            result.add((int) value > 0);
-                        }
+                        validationResult.add((int) value > 0);
                         break;
                     case "range":
-                        if (value instanceof Integer) {
-                            result.add(((int) value >= (int) parameters.get(key).get(0)
-                                    && (int) value <= (int) parameters.get(key).get(1)));
-                        }
+                        validationResult.add(((int) value >= (int) parameters.get(parameterFromSet).get(0)
+                                && (int) value <= (int) parameters.get(parameterFromSet).get(1)));
                         break;
                     default:
                         throw new RuntimeException();
                 }
+            } else {
+                validationResult.add(false);
             }
         }
-        return !result.contains(false);
+        return !validationResult.contains(false);
     }
 
 }

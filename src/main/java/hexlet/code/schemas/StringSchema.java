@@ -13,8 +13,8 @@ public class StringSchema extends BaseSchema<Object> {
     public StringSchema() {
     }
 
-    public final StringSchema minLength(final int value) {
-        parameters.put("minLength", List.of(value));
+    public final StringSchema minLength(final int stringLenght) {
+        parameters.put("minLength", List.of(stringLenght));
         return this;
     }
 
@@ -23,8 +23,8 @@ public class StringSchema extends BaseSchema<Object> {
         return this;
     }
 
-    public final StringSchema contains(final String string) {
-        parameters.put("contains", List.of(string));
+    public final StringSchema contains(final String str) {
+        parameters.put("contains", List.of(str));
         return this;
     }
 

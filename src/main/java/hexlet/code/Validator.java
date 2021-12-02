@@ -6,15 +6,15 @@ import hexlet.code.schemas.StringSchema;
 
 public class Validator {
 
-    public static StringSchema string() {
+    public final StringSchema string() {
         return new StringSchema();
     }
 
-    public static NumberSchema number() {
+    public final NumberSchema number() {
         return new NumberSchema();
     }
 
-    public static MapSchema map() {
+    public final MapSchema<Object> map() {
         return new MapSchema<>();
     }
 }

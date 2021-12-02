@@ -16,17 +16,18 @@ public class BaseSchema<T1> {
     public BaseSchema() {
     }
 
-    public static void setParameters(Map<String, List<Object>> param) {
-        BaseSchema.parameters = param;
+    public static void setParameters(Map<String, List<Object>> parametersFromSchema) {
+        BaseSchema.parameters = parametersFromSchema;
     }
 
-    public static void setParameter(String param1) {
-        BaseSchema.parameter = param1;
+    public static void setParameter(String parameterFromSchema) {
+        BaseSchema.parameter = parameterFromSchema;
     }
 
     public static Boolean parametersIsEmpty() {
         return parameters.size() == 0;
     }
+
 
     /**
      * @param value the value that is passed to the method

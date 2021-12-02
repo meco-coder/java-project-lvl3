@@ -13,8 +13,8 @@ public class StringSchema extends BaseSchema<Object> {
     public StringSchema() {
     }
 
-    public final StringSchema minLength(final int stringLenght) {
-        parameters.put("minLength", List.of(stringLenght));
+    public final StringSchema minLength(final int stringLength) {
+        parameters.put("minLength", List.of(stringLength));
         return this;
     }
 

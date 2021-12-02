@@ -47,7 +47,7 @@ public class NumberSchema extends BaseSchema<Object> {
                         break;
                     case "positive":
                         if (value instanceof Integer) {
-                            result.add((int) value >= 0);
+                            result.add((int) value > 0);
                         }
                         break;
                     case "range":

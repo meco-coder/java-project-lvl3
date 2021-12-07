@@ -16,7 +16,7 @@ public class MapSchema<T1> extends BaseSchema<T1> {
     }
 
     public final MapSchema<T1> required() {
-        Predicate<Object> isRequired = x -> x instanceof Map;
+        Predicate<Object> isRequired = x -> x instanceof Map && ((Map<?, ?>) x).size() != 0;
         setPredicates(isRequired);
         return this;
     }

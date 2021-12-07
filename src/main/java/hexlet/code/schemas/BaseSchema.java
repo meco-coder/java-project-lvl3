@@ -24,7 +24,7 @@ public abstract class BaseSchema<T1> {
         if (predicates.size() == 0) {
             return true;
         }
-        List<Boolean> resultIsValid = new ArrayList<>();
+        final List<Boolean> resultIsValid = new ArrayList<>();
         for (Predicate<Object> result : predicates) {
             resultIsValid.add(result.test(value));
         }

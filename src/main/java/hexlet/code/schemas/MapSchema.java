@@ -11,24 +11,24 @@ public class MapSchema<T1> extends BaseSchema<T1> {
     }
 
     public final MapSchema<T1> required() {
-        Predicate<Object> isRequired = x -> x instanceof Map;
+        final Predicate<Object> isRequired = x -> x instanceof Map;
         setPredicates(isRequired);
         return this;
     }
 
     public final MapSchema<T1> sizeof(final int sizeMap) {
-        Predicate<Object> sizeofIsValid = x -> {
+        final Predicate<Object> sizeof = x -> {
             if (x instanceof Map) {
                 return ((Map<?, ?>) x).size() == sizeMap;
             }
             return false;
         };
-        setPredicates(sizeofIsValid);
+        setPredicates(sizeof);
         return this;
     }
 
     public final void shape(final Map<String, BaseSchema<Object>> map) {
-        Predicate<Object> shape = x -> {
+        final Predicate<Object> shape = x -> {
             List<Boolean> resultShape = new ArrayList<>();
             Set<String> keySet = map.keySet();
             for (String key : keySet) {

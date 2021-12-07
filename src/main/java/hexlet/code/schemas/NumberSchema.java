@@ -8,24 +8,24 @@ public class NumberSchema extends BaseSchema<Object> {
     }
 
     public final NumberSchema range(final Integer minNum, final Integer maxNum) {
-        Predicate<Object> rangeIsValid = x -> {
+        final Predicate<Object> range = x -> {
             if (x instanceof Integer) {
                 return (int) x >= minNum && (int) x <= maxNum;
             }
             return false;
         };
-        setPredicates(rangeIsValid);
+        setPredicates(range);
         return this;
     }
 
     public final NumberSchema required() {
-        Predicate<Object> isRequired = x -> x instanceof Integer;
+        final Predicate<Object> isRequired = x -> x instanceof Integer;
         setPredicates(isRequired);
         return this;
     }
 
     public final NumberSchema positive() {
-        Predicate<Object> isPositive = x -> {
+        final Predicate<Object> isPositive = x -> {
             if (x instanceof Integer) {
                 return (int) x != 0 && (int) x > 0;
             } else {

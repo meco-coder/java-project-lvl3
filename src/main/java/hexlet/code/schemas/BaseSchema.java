@@ -1,56 +1,34 @@
 package hexlet.code.schemas;
 
-import lombok.Data;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Predicate;
 
 
-@Data
-public class BaseSchema<T1> {
+public abstract class BaseSchema<T1> {
+    private List<Predicate<Object>> predicates = new ArrayList<>();
 
-    private static String parameter;
-    private static Map<String, List<Object>> parameters = new HashMap<>();
+    public final void setPredicates(Predicate<Object> predict) {
+        this.predicates.add(predict);
+    }
 
     public BaseSchema() {
     }
-
-    public static void setParameters(Map<String, List<Object>> parametersFromSchema) {
-        BaseSchema.parameters = parametersFromSchema;
-    }
-
-    public static void setParameter(String parameterFromSchema) {
-        BaseSchema.parameter = parameterFromSchema;
-    }
-
-    public static Boolean parametersIsEmpty() {
-        return parameters.size() == 0;
-    }
-
 
     /**
      * @param value the value that is passed to the method
      * @return return false or true
      */
     public Boolean isValid(T1 value) {
-        if (parameter == null) {
+        if (predicates.size() == 0) {
             return true;
         }
-        switch (parameter) {
-            case "required":
-                return value != null;
-            case "minLength":
-            case "sizeof":
-                return (int) parameters.get(parameter).get(0) == 0;
-            case "contains":
-                return parameters.get(parameter).get(0) == null;
-            case "positive":
-                return value == null;
-            case "range":
-                return false;
-            default:
-                throw new RuntimeException();
+        List<Boolean> resultIsValid = new ArrayList<>();
+        for (Predicate<Object> result : predicates) {
+            resultIsValid.add(result.test(value));
         }
+        return !resultIsValid.contains(false);
+
     }
 }

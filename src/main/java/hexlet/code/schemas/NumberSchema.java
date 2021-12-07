@@ -28,8 +28,7 @@ public class NumberSchema extends BaseSchema<Object> {
         Predicate<Object> isPositive = x -> {
             if (x instanceof Integer) {
                 return (int) x != 0 && (int) x > 0;
-            }
-            return false;
+            } else return x == null;
         };
         setPredicates(isPositive);
         return this;

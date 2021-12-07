@@ -7,10 +7,10 @@ import java.util.function.Predicate;
 
 
 public abstract class BaseSchema<T1> {
-    private List<Predicate<Object>> predicates = new ArrayList<>();
+    private final List<Predicate<Object>> predicates = new ArrayList<>();
 
-    public final void setPredicates(Predicate<Object> predict) {
-        this.predicates.add(predict);
+    public final void setPredicates(Predicate<Object> predicate) {
+        this.predicates.add(predicate);
     }
 
     public BaseSchema() {

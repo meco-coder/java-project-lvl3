@@ -19,7 +19,7 @@ public class StringSchema extends BaseSchema<Object> {
     }
 
     public final StringSchema required() {
-        Predicate<Object> isRequired = x -> x instanceof String;
+        Predicate<Object> isRequired = x -> x instanceof String && ((String) x).length() != 0;
         setPredicates(isRequired);
         return this;
     }

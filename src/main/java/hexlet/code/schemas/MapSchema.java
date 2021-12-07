@@ -1,17 +1,12 @@
 package hexlet.code.schemas;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
 public class MapSchema<T1> extends BaseSchema<T1> {
-    private Set<String> keySet = new HashSet<>();
-    private Map<String, BaseSchema<Object>> shapeMap = new HashMap<>();
-
     public MapSchema() {
     }
 
@@ -33,12 +28,11 @@ public class MapSchema<T1> extends BaseSchema<T1> {
     }
 
     public final void shape(final Map<String, BaseSchema<Object>> map) {
-        shapeMap = map;
-        keySet = map.keySet();
         Predicate<Object> shape = x -> {
             List<Boolean> resultShape = new ArrayList<>();
+            Set<String> keySet = map.keySet();
             for (String key : keySet) {
-                resultShape.add(shapeMap.get(key).isValid(((Map<?, ?>) x).get(key)));
+                resultShape.add(map.get(key).isValid(((Map<?, ?>) x).get(key)));
             }
             return !resultShape.contains(false);
         };
